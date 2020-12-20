@@ -1,0 +1,26 @@
+version: '3.1'
+services:
+  api:
+    image: jllz/api-docker-image:1.0
+    ports:
+      - 9091:8080
+    links:
+      - api-database
+    depends_on:
+      - api-database
+
+  api-database:
+    image: jllz/mongo:1.0
+    container_name: api-database
+    environment:
+      - MONGO_INITDB_DATABASE=pagantis_db
+    command: --noauth
+    ports:
+      - 27017:27017
+
+  app:
+    image: jllz/paga-coin-app:1.0
+    environment:
+      - NODE_ENV=production
+    ports:
+      - '80:80'
